@@ -9,24 +9,48 @@ import "./Oraclize.sol";
 contract Ownable {
     //  TODO's
     //  1) create a private '_owner' variable of type address with a public getter function
+    address private _owner;
+    constructor(){
+        _owner=msg.sender;
+    }
+    function getOwner() public {
+    return _owner;
+    }
     //  2) create an internal constructor that sets the _owner var to the creater of the contract 
     //  3) create an 'onlyOwner' modifier that throws if called by any account other than the owner.
+        modifier onlyOwner() {
+      require(_owner == msg.sender,"not owner");
+      emit OwnerShipTransfered();
+      _;
+    }
     //  4) fill out the transferOwnership function
     //  5) create an event that emits anytime ownerShip is transfered (including in the constructor)
+    event OwnerShipTransfered();
 
     function transferOwnership(address newOwner) public onlyOwner {
         // TODO add functionality to transfer control of the contract to a newOwner.
+        _owner = newOwner;
         // make sure the new owner is a real address
-
+        emit OwnerShipTransfered();
     }
 }
 
+contract Pausable is Ownable{
 //  TODO's: Create a Pausable contract that inherits from the Ownable contract
 //  1) create a private '_paused' variable of type bool
+    bool private _paused;
 //  2) create a public setter using the inherited onlyOwner modifier 
+function setPaused(bool value) public onlyOwner{
+    _paused=value;
+}
 //  3) create an internal constructor that sets the _paused variable to false
+
 //  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
 //  5) create a Paused & Unpaused event that emits the address that triggered the event
+
+
+
+}
 
 contract ERC165 {
     bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
