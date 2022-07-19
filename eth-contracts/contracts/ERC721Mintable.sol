@@ -245,9 +245,11 @@ contract ERC721 is Pausable, ERC165 {
     function _transferFrom(address from, address to, uint256 tokenId) internal {
 
         // TODO: require from address is the owner of the given token
+        require(ownerOf(tokenId) == from);
 
         // TODO: require token is being transfered to valid address
-        
+                require(to != address(0));
+
         // TODO: clear approval
 
         // TODO: update token counts & transfer ownership of the token ID 
