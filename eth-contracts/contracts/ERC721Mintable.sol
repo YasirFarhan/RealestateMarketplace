@@ -44,12 +44,22 @@ function setPaused(bool value) public onlyOwner{
     _paused=value;
 }
 //  3) create an internal constructor that sets the _paused variable to false
-
+constructor()internal{
+_paused=false;
+}
 //  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
+modifier whenNotPaused{
+    if(_paused){
+        emit Paused(msg.sender);
+        revert();
+    } else {
+        emit Unpaused(msg.sender);
+        return;
+    }
+}
 //  5) create a Paused & Unpaused event that emits the address that triggered the event
-
-
-
+event Paused(address indexed _addrress);
+event Unpaused(address indexed _addrress);
 }
 
 contract ERC165 {
@@ -128,18 +138,20 @@ contract ERC721 is Pausable, ERC165 {
 
     function balanceOf(address owner) public view returns (uint256) {
         // TODO return the token balance of given address
+         return _ownedTokensCount[owner].current();
         // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
     }
 
     function ownerOf(uint256 tokenId) public view returns (address) {
         // TODO return the owner of the given tokenId
+        return _tokenOwner[owner];
     }
 
 //    @dev Approves another address to transfer the given token ID
     function approve(address to, uint256 tokenId) public {
         
         // TODO require the given address to not be the owner of the tokenId
-
+        require (msg.sender == owner(tokenId),"not contract ownerr");
         // TODO require the msg sender to be the owner of the contract or isApprovedForAll() to be true
 
         // TODO add 'to' address to token approvals
