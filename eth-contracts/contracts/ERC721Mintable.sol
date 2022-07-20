@@ -223,7 +223,7 @@ contract ERC721 is Pausable, ERC165 {
      */
     function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool) {
         address owner = ownerOf(tokenId);
-        return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender));
+        return (spender == owner || isApprovedForAll(owner, spender) || getApproved(tokenId) == spender);
     }
 
     // @dev Internal function to mint a new token
@@ -244,17 +244,18 @@ contract ERC721 is Pausable, ERC165 {
     // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
     function _transferFrom(address from, address to, uint256 tokenId) internal {
 
-        // TODO: require from address is the owner of the given token
+     // TODO: require from address is the owner of the given token
         require(ownerOf(tokenId) == from);
 
         // TODO: require token is being transfered to valid address
-                require(to != address(0));
-
+        require(to != address(0));
         // TODO: clear approval
-
-        // TODO: update token counts & transfer ownership of the token ID 
-
+        _operatorApprovals[to][from] = false;
+        // TODO: update token counts & transfer ownership of the token ID
+        _ownedTokensCount[to].increment();
+        _tokenOwner[tokenId] = to;
         // TODO: emit correct event
+        emit Transfer(from, to, tokenId);
     }
 
     /**
