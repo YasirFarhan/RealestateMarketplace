@@ -1,3 +1,4 @@
+// "SPDX-License-Identifier: MIT
 pragma solidity ^0.5.0;
 
 import 'openzeppelin-solidity/contracts/utils/Address.sol';
@@ -478,7 +479,9 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 
     constructor (string memory name, string memory symbol, string memory baseTokenURI) public {
         // TODO: set instance var values
-
+        _name = name;
+        _symbol = symbol;
+        _baseTokenURI = baseTokenURI;
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
     }
 
